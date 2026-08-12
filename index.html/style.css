@@ -1,0 +1,150 @@
+body {
+    margin: 0;
+    padding: 30px;
+    background: linear-gradient(#d9edf7, #a9c9d9);
+    font-family: Arial, sans-serif;
+    color: #333;
+}
+
+h1 {
+    margin: 0;
+    color: #2f5f78;
+    font-size: 38px;
+    text-shadow: 1px 1px 2px #ffffff;
+}
+
+body > p {
+    margin-top: 5px;
+    color: #5f7480;
+}
+
+button {
+    cursor: pointer;
+}
+
+body > button {
+    background: linear-gradient(#78b1d0, #4d88aa);
+    color: white;
+    border: 1px solid #3b6d8b;
+    border-radius: 6px;
+    padding: 9px 15px;
+    margin: 15px 0;
+    box-shadow: inset 0 1px rgba(255, 255, 255, 0.6);
+}
+
+body > button:hover {
+    background: linear-gradient(#8ac0dd, #6098b7);
+}
+
+#favoriteSection {
+    margin: 20px 0;
+    padding: 20px;
+    background: #eeeeee;
+    border: 1px solid #b8b8b8;
+    border-radius: 10px;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+}
+
+#favoriteSection h2 {
+    margin-top: 0;
+    color: #444;
+}
+
+#favorites {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.sounds {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.sound {
+    background: linear-gradient(#ffffff, #e5e5e5);
+    border: 1px solid #b5b5b5;
+    border-radius: 10px;
+    padding: 18px;
+    width: 220px;
+    text-align: center;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.25);
+}
+
+.sound:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 12px rgba(0, 0, 0, 0.3);
+}
+
+.sound h2 {
+    margin-top: 0;
+    color: #333;
+}
+
+.sound button {
+    background: linear-gradient(#6fa8c9, #477fa3);
+    color: white;
+    border: 1px solid #3b6d8b;
+    border-radius: 6px;
+    padding: 8px 12px;
+    margin: 5px;
+    box-shadow: inset 0 1px rgba(255, 255, 255, 0.5);
+}
+
+.sound button:hover {
+    background: linear-gradient(#82b8d8, #578daa);
+}
+
+.donate-button {
+    display: inline-block;
+    margin: 15px 0;
+    padding: 12px 20px;
+    background: linear-gradient(#8fc9e8, #4e91b8);
+    color: white;
+    border: 1px solid #3c7596;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 16px;
+    box-shadow:
+        inset 0 1px rgba(255, 255, 255, 0.7),
+        0 3px 7px rgba(0, 0, 0, 0.25);
+}
+
+.donate-button:hover {
+    background: linear-gradient(#a5d8f0, #65a4c7);
+    transform: translateY(-2px);
+}
+
+.volume-control {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin: 10px 0;
+}
+
+.volume-control input[type="range"] {
+    width: 130px;
+    margin: 0;
+}
+
+.volume-control span {
+    display: inline-block;
+    width: 42px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #444;
+}
+
+#searchSounds {
+    display: block;
+    width: 260px;
+    padding: 10px 12px;
+    margin: 10px 0 25px 0;
+    border: 1px solid #9bb5c4;
+    border-radius: 6px;
+    font-size: 15px;
+    box-sizing: border-box;
+}

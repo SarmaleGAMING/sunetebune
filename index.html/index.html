@@ -1,0 +1,146 @@
+```html
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <title>SuneteBune</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <h1>SuneteBune</h1>
+    <p>Biblioteca mea de sunete</p>
+
+    <div id="auth">
+        <input
+            id="email"
+            type="email"
+            placeholder="Email"
+        >
+
+        <input
+            id="username"
+            type="text"
+            placeholder="Nume de utilizator"
+        >
+
+        <input
+            id="password"
+            type="password"
+            placeholder="Parolă"
+        >
+
+        <button onclick="signUp()">Creează cont</button>
+        <button onclick="signIn()">Intră în cont</button>
+
+        <p id="authMessage"></p>
+    </div>
+
+    <button
+        id="favoriteToggle"
+        onclick="toggleFavoriteSection()"
+    >
+        ♡ Vezi favorite
+    </button>
+
+    <div id="favoriteSection">
+
+        <h2>Favorite</h2>
+
+        <div id="favorites">
+            <p>Niciun sunet favorit încă.</p>
+        </div>
+
+    </div>
+
+    <h2>Toate sunetele</h2>
+
+    <input
+        type="text"
+        id="searchSounds"
+        placeholder="Caută un sunet..."
+    >
+
+    <button
+        id="randomSoundButton"
+        onclick="playRandomSound()"
+    >
+        🎲 Sunet aleator
+    </button>
+
+    <p id="randomResult"></p>
+
+    <p
+        id="noResults"
+        style="display: none;"
+    >
+        Sunetul nu este în sistem.
+    </p>
+
+    <div class="sounds">
+
+        <div class="sound">
+            <h2>Ușă</h2>
+
+            <button onclick="playSound()">
+                ▶ Ascultă
+            </button>
+
+            <div class="volume-control">
+                <input
+                    id="usaSlider"
+                    type="range"
+                    min="0"
+                    max="100"
+                    value="100"
+                >
+
+                <span id="usaVolume">100%</span>
+            </div>
+
+            <button onclick="toggleFavorite(this)">
+                ♡ Favorite
+            </button>
+        </div>
+
+        <div class="sound">
+            <h2>Clopoțel</h2>
+
+            <button onclick="playClopotel()">
+                ▶ Ascultă
+            </button>
+
+            <div class="volume-control">
+                <input
+                    id="clopotelSlider"
+                    type="range"
+                    min="0"
+                    max="100"
+                    value="100"
+                >
+
+                <span id="clopotelVolume">100%</span>
+            </div>
+
+            <button onclick="toggleFavorite(this)">
+                ♡ Favorite
+            </button>
+        </div>
+
+    </div>
+
+    <a
+        class="donate-button"
+        href="https://paypal.me/dariusboroanca"
+        target="_blank"
+    >
+        💙 Susține SuneteBune
+    </a>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="script.js"></script>
+
+</body>
+</html>
+```
