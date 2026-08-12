@@ -163,20 +163,54 @@ async function signUp() {
 }
 
 async function signIn() {
-    const email =
-        document.getElementById("email").value;
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value;
+    const message = document.getElementById("authMessage");
 
-    const password =
-        document.getElementById("password").value;
+    if (!email || !password) {
+        message.textContent = "Completează emailul și parola.";
+        return;
+    }
 
-    const message =
-        document.getElementById("authMessage");
-
-    const { error } =
+    const { data, error } =
         await supabaseClient.auth.signInWithPassword({
             email: email,
             password: password
         });
+
+    if (error) {
+        message.textContent = error.message;
+        return;
+    }
+
+    const user = data.user;
+
+    const { data: profile } =
+        await supabaseClient
+            .from("profiles")
+            .select("id")
+            .eq("id", user.id)
+            .maybeSingle();
+
+    if (!profile) {
+        const username = email.split("@")[0];
+
+        const { error: profileError } =
+            await supabaseClient
+                .from("profiles")
+                .insert({
+                    id: user.id,
+                    username: username,
+                    spins: 0
+                });
+
+        if (profileError) {
+            console.error("Profile error:", profileError);
+        }
+    }
+
+    message.textContent = "Te-ai conectat.";
+}
 
     if (error) {
         message.textContent = error.message;
