@@ -103,7 +103,7 @@ function toggleFavoriteSection() {
     }
 }
 
-function playRandomSound() {
+async function playRandomSound() {
     const sounds =
         document.querySelectorAll(".sounds .sound");
 
