@@ -135,6 +135,43 @@ async function playRandomSound() {
     if (playButton) {
         playButton.click();
     }
+
+    const { data: userData } =
+        await supabaseClient.auth.getUser();
+
+    const user = userData.user;
+
+    if (!user) {
+        console.log("Nu ești conectat.");
+        return;
+    }
+
+    const { data: profile, error: profileError } =
+        await supabaseClient
+            .from("profiles")
+            .select("spins")
+            .eq("id", user.id)
+            .single();
+
+    if (profileError) {
+        console.error("Eroare la citirea spins:", profileError);
+        return;
+    }
+
+    const newSpins = (profile.spins || 0) + 1;
+
+    const { error: updateError } =
+        await supabaseClient
+            .from("profiles")
+            .update({ spins: newSpins })
+            .eq("id", user.id);
+
+    if (updateError) {
+        console.error("Eroare la actualizarea spins:", updateError);
+        return;
+    }
+
+    console.log("Spins:", newSpins);
 }
 
 async function signUp() {
