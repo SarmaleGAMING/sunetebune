@@ -22,10 +22,15 @@ function playClopotel() {
 function toggleFavorite(button) {
     const sound = button.closest(".sound");
 
-    if (!sound) return;
+    if (!sound) {
+        return;
+    }
 
-    const soundName = sound.querySelector("h2").innerText;
-    const key = soundName + "Favorite";
+    const soundName =
+        sound.querySelector("h2").innerText;
+
+    const key =
+        soundName + "Favorite";
 
     if (button.innerText.trim() === "♡ Favorite") {
         button.innerText = "♥ Favorit";
@@ -39,7 +44,8 @@ function toggleFavorite(button) {
 }
 
 function showFavorites() {
-    const favorites = document.getElementById("favorites");
+    const favorites =
+        document.getElementById("favorites");
 
     if (!favorites) {
         return;
@@ -47,17 +53,29 @@ function showFavorites() {
 
     favorites.innerHTML = "";
 
-    const sounds = document.querySelectorAll(".sounds > .sound");
+    const sounds =
+        document.querySelectorAll(
+            ".sounds > .sound"
+        );
+
     let found = false;
 
     sounds.forEach(function(sound) {
-        const name = sound.querySelector("h2").innerText;
+        const name =
+            sound.querySelector("h2").innerText;
 
-        if (localStorage.getItem(name + "Favorite") === "true") {
-            const copy = sound.cloneNode(true);
+        if (
+            localStorage.getItem(
+                name + "Favorite"
+            ) === "true"
+        ) {
+            const copy =
+                sound.cloneNode(true);
 
             const volumeControl =
-                copy.querySelector(".volume-control");
+                copy.querySelector(
+                    ".volume-control"
+                );
 
             if (volumeControl) {
                 volumeControl.remove();
@@ -73,6 +91,7 @@ function showFavorites() {
             }
 
             favorites.appendChild(copy);
+
             found = true;
         }
     });
@@ -85,10 +104,14 @@ function showFavorites() {
 
 function toggleFavoriteSection() {
     const section =
-        document.getElementById("favoriteSection");
+        document.getElementById(
+            "favoriteSection"
+        );
 
     const button =
-        document.getElementById("favoriteToggle");
+        document.getElementById(
+            "favoriteToggle"
+        );
 
     if (!section || !button) {
         return;
@@ -96,31 +119,42 @@ function toggleFavoriteSection() {
 
     if (section.style.display === "none") {
         section.style.display = "block";
-        button.innerText = "♡ Ascunde favorite";
+        button.innerText =
+            "♡ Ascunde favorite";
     } else {
         section.style.display = "none";
-        button.innerText = "♡ Vezi favorite";
+        button.innerText =
+            "♡ Vezi favorite";
     }
 }
 
 async function playRandomSound() {
     const sounds =
-        document.querySelectorAll(".sounds .sound");
+        document.querySelectorAll(
+            ".sounds .sound"
+        );
 
     if (sounds.length === 0) {
         return;
     }
 
     const randomIndex =
-        Math.floor(Math.random() * sounds.length);
+        Math.floor(
+            Math.random() * sounds.length
+        );
 
-    const randomSound = sounds[randomIndex];
+    const randomSound =
+        sounds[randomIndex];
 
     const soundName =
-        randomSound.querySelector("h2").innerText;
+        randomSound.querySelector(
+            "h2"
+        ).innerText;
 
     const result =
-        document.getElementById("randomResult");
+        document.getElementById(
+            "randomResult"
+        );
 
     if (result) {
         result.textContent =
@@ -136,63 +170,138 @@ async function playRandomSound() {
         playButton.click();
     }
 
-    const { data: userData } =
-        await supabaseClient.auth.getUser();
+    const {
+        data: userData,
+        error: userError
+    } = await supabaseClient.auth.getUser();
 
-    const user = userData.user;
+    if (userError) {
+        console.error(
+            "Eroare user:",
+            userError
+        );
+        return;
+    }
+
+    const user =
+        userData.user;
 
     if (!user) {
-        console.log("Nu ești conectat.");
+        console.log(
+            "Nu ești conectat."
+        );
         return;
     }
 
-    const { data: profile, error: profileError } =
-        await supabaseClient
-            .from("profiles")
-            .select("spins")
-            .eq("id", user.id)
-            .single();
+    const {
+        data: profile,
+        error: profileError
+    } = await supabaseClient
+        .from("profiles")
+        .select("spins")
+        .eq("id", user.id)
+        .single();
 
     if (profileError) {
-        console.error("Eroare la citirea spins:", profileError);
+        console.error(
+            "Eroare la citirea spins:",
+            profileError
+        );
         return;
     }
 
-    const newSpins = (profile.spins || 0) + 1;
+    const newSpins =
+        (profile.spins || 0) + 1;
 
-    const { error: updateError } =
-        await supabaseClient
-            .from("profiles")
-            .update({ spins: newSpins })
-            .eq("id", user.id);
+    const {
+        error: updateError
+    } = await supabaseClient
+        .from("profiles")
+        .update({
+            spins: newSpins
+        })
+        .eq("id", user.id);
 
     if (updateError) {
-        console.error("Eroare la actualizarea spins:", updateError);
+        console.error(
+            "Eroare la actualizarea spins:",
+            updateError
+        );
         return;
     }
 
-    console.log("Spins:", newSpins);
+    console.log(
+        "Spins:",
+        newSpins
+    );
 }
 
 async function signUp() {
     const email =
-        document.getElementById("email").value;
+        document.getElementById(
+            "email"
+        ).value.trim();
+
+    const username =
+        document.getElementById(
+            "username"
+        )?.value.trim();
 
     const password =
-        document.getElementById("password").value;
+        document.getElementById(
+            "password"
+        ).value;
 
     const message =
-        document.getElementById("authMessage");
+        document.getElementById(
+            "authMessage"
+        );
 
-    const { error } =
-        await supabaseClient.auth.signUp({
-            email: email,
-            password: password
-        });
+    if (!email || !password) {
+        message.textContent =
+            "Completează emailul și parola.";
+        return;
+    }
+
+    const {
+        data,
+        error
+    } = await supabaseClient.auth.signUp({
+        email: email,
+        password: password,
+        options: {
+            emailRedirectTo:
+                "https://sarmalegaming.github.io/sunetebune/"
+        }
+    });
 
     if (error) {
-        message.textContent = error.message;
+        message.textContent =
+            error.message;
         return;
+    }
+
+    if (data.user) {
+        const finalUsername =
+            username ||
+            email.split("@")[0];
+
+        const {
+            error: profileError
+        } = await supabaseClient
+            .from("profiles")
+            .insert({
+                id: data.user.id,
+                username: finalUsername,
+                spins: 0
+            });
+
+        if (profileError) {
+            console.error(
+                "Profile error:",
+                profileError
+            );
+        }
     }
 
     message.textContent =
@@ -200,58 +309,76 @@ async function signUp() {
 }
 
 async function signIn() {
-    const email = document.getElementById("email").value.trim();
-    const password = document.getElementById("password").value;
-    const message = document.getElementById("authMessage");
+    const email =
+        document.getElementById(
+            "email"
+        ).value.trim();
+
+    const password =
+        document.getElementById(
+            "password"
+        ).value;
+
+    const message =
+        document.getElementById(
+            "authMessage"
+        );
 
     if (!email || !password) {
-        message.textContent = "Completează emailul și parola.";
+        message.textContent =
+            "Completează emailul și parola.";
         return;
     }
 
-    const { data, error } =
-        await supabaseClient.auth.signInWithPassword({
+    const {
+        data,
+        error
+    } = await supabaseClient.auth
+        .signInWithPassword({
             email: email,
             password: password
         });
 
     if (error) {
-        message.textContent = error.message;
+        message.textContent =
+            error.message;
         return;
     }
 
-    const user = data.user;
+    const user =
+        data.user;
 
-    const { data: profile } =
-        await supabaseClient
-            .from("profiles")
-            .select("id")
-            .eq("id", user.id)
-            .maybeSingle();
+    const {
+        data: profile
+    } = await supabaseClient
+        .from("profiles")
+        .select("id")
+        .eq("id", user.id)
+        .maybeSingle();
 
     if (!profile) {
-        const username = email.split("@")[0];
+        const username =
+            document.getElementById(
+                "username"
+            )?.value.trim() ||
+            email.split("@")[0];
 
-        const { error: profileError } =
-            await supabaseClient
-                .from("profiles")
-                .insert({
-                    id: user.id,
-                    username: username,
-                    spins: 0
-                });
+        const {
+            error: profileError
+        } = await supabaseClient
+            .from("profiles")
+            .insert({
+                id: user.id,
+                username: username,
+                spins: 0
+            });
 
         if (profileError) {
-            console.error("Profile error:", profileError);
+            console.error(
+                "Profile error:",
+                profileError
+            );
         }
-    }
-
-    message.textContent = "Te-ai conectat.";
-}
-
-    if (error) {
-        message.textContent = error.message;
-        return;
     }
 
     message.textContent =
@@ -263,10 +390,14 @@ window.addEventListener(
     function() {
 
         const usaSlider =
-            document.getElementById("usaSlider");
+            document.getElementById(
+                "usaSlider"
+            );
 
         const usaVolume =
-            document.getElementById("usaVolume");
+            document.getElementById(
+                "usaVolume"
+            );
 
         if (usaSlider && usaVolume) {
             usaSlider.addEventListener(
@@ -282,12 +413,19 @@ window.addEventListener(
         }
 
         const clopotelSlider =
-            document.getElementById("clopotelSlider");
+            document.getElementById(
+                "clopotelSlider"
+            );
 
         const clopotelVolume =
-            document.getElementById("clopotelVolume");
+            document.getElementById(
+                "clopotelVolume"
+            );
 
-        if (clopotelSlider && clopotelVolume) {
+        if (
+            clopotelSlider &&
+            clopotelVolume
+        ) {
             clopotelSlider.addEventListener(
                 "input",
                 function() {
@@ -305,30 +443,45 @@ window.addEventListener(
                 ".sounds > .sound button"
             );
 
-        buttons.forEach(function(button) {
-
-            if (
-                button.innerText.trim() ===
-                "♡ Favorite"
-            ) {
-                const soundName =
-                    button.parentElement
-                        .querySelector("h2")
-                        .innerText;
+        buttons.forEach(
+            function(button) {
 
                 if (
-                    localStorage.getItem(
-                        soundName + "Favorite"
-                    ) === "true"
+                    button.innerText.trim() ===
+                    "♡ Favorite"
                 ) {
-                    button.innerText =
-                        "♥ Favorit";
+                    const parent =
+                        button.parentElement;
+
+                    const title =
+                        parent.querySelector(
+                            "h2"
+                        );
+
+                    if (!title) {
+                        return;
+                    }
+
+                    const soundName =
+                        title.innerText;
+
+                    if (
+                        localStorage.getItem(
+                            soundName +
+                            "Favorite"
+                        ) === "true"
+                    ) {
+                        button.innerText =
+                            "♥ Favorit";
+                    }
                 }
             }
-        });
+        );
 
         const search =
-            document.getElementById("searchSounds");
+            document.getElementById(
+                "searchSounds"
+            );
 
         const sounds =
             document.querySelectorAll(
@@ -336,7 +489,9 @@ window.addEventListener(
             );
 
         const noResults =
-            document.getElementById("noResults");
+            document.getElementById(
+                "noResults"
+            );
 
         if (search) {
             search.addEventListener(
@@ -353,14 +508,23 @@ window.addEventListener(
                     sounds.forEach(
                         function(sound) {
 
-                            const name =
+                            const title =
                                 sound.querySelector(
                                     "h2"
-                                ).innerText
-                                 .toLowerCase();
+                                );
+
+                            if (!title) {
+                                return;
+                            }
+
+                            const name =
+                                title.innerText
+                                    .toLowerCase();
 
                             if (
-                                name.includes(text)
+                                name.includes(
+                                    text
+                                )
                             ) {
                                 sound.style.display =
                                     "";
